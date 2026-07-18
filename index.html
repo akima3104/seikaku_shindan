@@ -56,21 +56,24 @@
   <!-- ============ RESULT ============ -->
   <section class="screen screen--result" id="screen-result">
     <div class="result">
-      <p class="eyebrow">YOUR RESULT</p>
-      <h2 class="result-name" id="result-name">&nbsp;</h2>
-      <p class="result-tagline" id="result-tagline"></p>
+      <div class="result-card" id="result-card">
+        <p class="eyebrow">YOUR RESULT</p>
+        <h2 class="result-name" id="result-name">&nbsp;</h2>
+        <p class="result-tagline" id="result-tagline"></p>
 
-      <div class="result-body">
-        <div class="result-pentagon" id="result-pentagon"></div>
-        <div class="result-text">
-          <p class="result-desc" id="result-desc"></p>
-          <div class="result-stats" id="result-stats"></div>
+        <div class="result-body">
+          <div class="result-pentagon" id="result-pentagon"></div>
+          <div class="result-text">
+            <p class="result-desc" id="result-desc"></p>
+            <div class="result-stats" id="result-stats"></div>
+          </div>
         </div>
+        <p class="result-card-footer">#せいかく診断</p>
       </div>
 
       <div class="result-actions">
         <a class="btn btn--x" id="btn-share-x" href="#" target="_blank" rel="noopener">Xでシェアする</a>
-        <button class="btn btn--primary" id="btn-copy">結果をコピーする</button>
+        <button class="btn btn--primary" id="btn-save-image">画像として保存する</button>
         <button class="btn btn--ghost" id="btn-retry">もう一度診断する</button>
       </div>
       <p class="result-note">※このタイプ名は日本語の一般的な性格表現を用いた、本サイト独自の診断です。特定のゲーム作品・企業とは関係ありません。</p>
@@ -79,6 +82,7 @@
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

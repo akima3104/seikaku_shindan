@@ -95,7 +95,7 @@ const els = {
   btnStart: document.getElementById("btn-start"),
   btnBack: document.getElementById("btn-back"),
   btnRetry: document.getElementById("btn-retry"),
-  btnCopy: document.getElementById("btn-copy"),
+  btnSaveImage: document.getElementById("btn-save-image"),
   btnShareX: document.getElementById("btn-share-x"),
   progressFill: document.getElementById("progress-fill"),
   progressLabel: document.getElementById("progress-label"),
@@ -264,15 +264,29 @@ function resetQuiz() {
   showScreen(els.screenQuiz);
 }
 
-async function copyResult() {
-  const text = `【せいかく診断】私のタイプは「${els.resultName.textContent}」でした。\n${els.resultTagline.textContent}`;
+async function saveResultImage() {
+  const target = document.getElementById("result-card");
+  const originalLabel = els.btnSaveImage.textContent;
+  els.btnSaveImage.textContent = "画像を作成中...";
+  els.btnSaveImage.disabled = true;
   try {
-    await navigator.clipboard.writeText(text);
-    els.btnCopy.textContent = "コピーしました!";
-  } catch {
-    els.btnCopy.textContent = "コピーできませんでした";
+    const canvas = await html2canvas(target, {
+      backgroundColor: "#fffaf5",
+      scale: 2,
+      useCORS: true,
+    });
+    const link = document.createElement("a");
+    link.download = `せいかく診断_${els.resultName.textContent}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  } catch (err) {
+    els.btnSaveImage.textContent = "保存に失敗しました";
+    setTimeout(() => (els.btnSaveImage.textContent = originalLabel), 1800);
+    els.btnSaveImage.disabled = false;
+    return;
   }
-  setTimeout(() => (els.btnCopy.textContent = "結果をコピーする"), 1800);
+  els.btnSaveImage.textContent = originalLabel;
+  els.btnSaveImage.disabled = false;
 }
 
 els.btnStart.addEventListener("click", () => {
@@ -281,4 +295,4 @@ els.btnStart.addEventListener("click", () => {
 });
 els.btnBack.addEventListener("click", goBack);
 els.btnRetry.addEventListener("click", resetQuiz);
-els.btnCopy.addEventListener("click", copyResult);
+els.btnSaveImage.addEventListener("click", saveResultImage);
