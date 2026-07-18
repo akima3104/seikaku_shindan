@@ -332,39 +332,11 @@ function buildShareText(nature) {
   return `【せいかく診断】私のタイプは「${nature.name}」でした!\n${nature.tagline}\n#せいかく診断\n${SITE_URL}\nmade by @petrus_poke`;
 }
 
-async function shareToX() {
+function shareToX() {
   if (!currentNature) return;
   const shareText = buildShareText(currentNature);
   const intentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
-  const originalLabel = els.btnShareX.textContent;
-  els.btnShareX.textContent = "準備中...";
-  els.btnShareX.disabled = true;
-
-  try {
-    const file = await generateResultImageFile();
-    // X(旧Twitter)アプリなど、画像共有に対応したアプリを共有シートから選べる環境向け
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      try {
-        await navigator.share({ files: [file], text: shareText });
-        els.btnShareX.textContent = originalLabel;
-        els.btnShareX.disabled = false;
-        return;
-      } catch (shareErr) {
-        if (shareErr && shareErr.name === "AbortError") {
-          els.btnShareX.textContent = originalLabel;
-          els.btnShareX.disabled = false;
-          return;
-        }
-        // 共有シートが使えない/失敗した場合はXの投稿画面(テキストのみ)にフォールバック
-      }
-    }
-  } catch (err) {
-    // 画像生成に失敗した場合もテキストのみのフォールバックへ
-  }
-
   window.open(intentUrl, "_blank", "noopener");
-  els.btnShareX.textContent = originalLabel;
-  els.btnShareX.disabled = false;
 }
 
 els.btnStart.addEventListener("click", () => {
