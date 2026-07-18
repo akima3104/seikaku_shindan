@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>せいかく診断 | 5つのステータスで見る、あなたの性格タイプ</title>
+<meta name="description" content="16問の質問に答えるだけ。5つのステータスバランスから、25種類の性格タイプの中からあなたのタイプを診断します。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="stage" id="stage">
+
+  <!-- ============ INTRO ============ -->
+  <section class="screen screen--intro is-active" id="screen-intro">
+    <div class="intro">
+      <p class="eyebrow">STATUS DIAGNOSIS &mdash; 5 STATS / 25 TYPES</p>
+      <h1 class="intro-title">せいかく<span class="intro-title-sub">診断</span></h1>
+      <p class="intro-lede">積極性・慎重さ・発想力・思いやり・俊敏さ。<br>
+      5つのステータスの伸び方から、25種類のうちあなたの性格タイプを見つけます。</p>
+
+      <div class="intro-pentagon" aria-hidden="true">
+        <svg viewBox="0 0 240 240">
+          <polygon class="intro-pentagon-outline" points="120,14 220,88 182,204 58,204 20,88"></polygon>
+          <polygon class="intro-pentagon-fill" points="120,55 178,98 156,178 84,178 62,98"></polygon>
+        </svg>
+      </div>
+
+      <button class="btn btn--primary" id="btn-start">診断をはじめる &rarr;</button>
+      <p class="intro-meta">全16問 &middot; 所要時間 約2分</p>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="screen screen--quiz" id="screen-quiz">
+    <div class="quiz">
+      <div class="quiz-progress">
+        <div class="quiz-progress-track">
+          <div class="quiz-progress-fill" id="progress-fill"></div>
+        </div>
+        <span class="quiz-progress-label" id="progress-label">Q1 / 16</span>
+      </div>
+
+      <p class="quiz-trait-tag" id="quiz-trait-tag"></p>
+      <h2 class="quiz-question" id="quiz-question"></h2>
+
+      <div class="quiz-options" id="quiz-options"></div>
+
+      <button class="btn btn--ghost" id="btn-back">&larr; ひとつ前の質問</button>
+    </div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section class="screen screen--result" id="screen-result">
+    <div class="result">
+      <p class="eyebrow">YOUR RESULT</p>
+      <h2 class="result-name" id="result-name">&nbsp;</h2>
+      <p class="result-tagline" id="result-tagline"></p>
+
+      <div class="result-body">
+        <div class="result-pentagon" id="result-pentagon"></div>
+        <div class="result-text">
+          <p class="result-desc" id="result-desc"></p>
+          <div class="result-stats" id="result-stats"></div>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn btn--primary" id="btn-copy">結果をコピーする</button>
+        <button class="btn btn--ghost" id="btn-retry">もう一度診断する</button>
+      </div>
+      <p class="result-note">※このタイプ名は日本語の一般的な性格表現を用いた、本サイト独自の診断です。特定のゲーム作品・企業とは関係ありません。</p>
+    </div>
+  </section>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
