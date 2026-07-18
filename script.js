@@ -16,6 +16,8 @@ const TRAITS = {
 // レーダーチャートに描く順番(五角形の頂点、上から時計回り)
 const TRAIT_ORDER = ["atk", "def", "spa", "spd", "spe"];
 
+const SITE_URL = "https://akima3104.github.io/seikaku_shindan/";
+
 const QUESTIONS = [
   { trait: "atk", text: "自分の意見は、はっきりと相手に伝える方だ" },
   { trait: "atk", text: "人と競い合うことに、やりがいを感じる" },
@@ -87,6 +89,8 @@ const state = {
   index: 0,
   answers: new Array(QUESTIONS.length).fill(null),
 };
+
+let currentNature = null;
 
 const els = {
   screenIntro: document.getElementById("screen-intro"),
@@ -251,8 +255,7 @@ function renderResult(nature, avgs, upKey, downKey) {
       </div>`;
   }).join("");
 
-  const shareText = `【せいかく診断】私のタイプは「${nature.name}」でした!\n${nature.tagline}\n#せいかく診断\nmade by @petrus_poke`;
-  els.btnShareX.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+  currentNature = nature;
 
   showScreen(els.screenResult);
 }
@@ -268,21 +271,25 @@ function canvasToBlob(canvas) {
   return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
 }
 
-async function saveResultImage() {
+async function generateResultImageFile() {
   const target = document.getElementById("result-card");
+  const canvas = await html2canvas(target, {
+    backgroundColor: "#fffaf5",
+    scale: 2,
+    useCORS: true,
+  });
+  const fileName = `せいかく診断_${els.resultName.textContent}.png`;
+  const blob = await canvasToBlob(canvas);
+  return new File([blob], fileName, { type: "image/png" });
+}
+
+async function saveResultImage() {
   const originalLabel = els.btnSaveImage.textContent;
   els.btnSaveImage.textContent = "画像を作成中...";
   els.btnSaveImage.disabled = true;
 
   try {
-    const canvas = await html2canvas(target, {
-      backgroundColor: "#fffaf5",
-      scale: 2,
-      useCORS: true,
-    });
-    const fileName = `せいかく診断_${els.resultName.textContent}.png`;
-    const blob = await canvasToBlob(canvas);
-    const file = new File([blob], fileName, { type: "image/png" });
+    const file = await generateResultImageFile();
 
     // iOSなど対応環境では共有シートを開き、「イメージを保存」で写真アプリに保存できるようにする
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -307,8 +314,8 @@ async function saveResultImage() {
     }
 
     const link = document.createElement("a");
-    link.download = fileName;
-    link.href = URL.createObjectURL(blob);
+    link.download = file.name;
+    link.href = URL.createObjectURL(file);
     link.click();
     URL.revokeObjectURL(link.href);
   } catch (err) {
@@ -321,6 +328,45 @@ async function saveResultImage() {
   els.btnSaveImage.disabled = false;
 }
 
+function buildShareText(nature) {
+  return `【せいかく診断】私のタイプは「${nature.name}」でした!\n${nature.tagline}\n#せいかく診断\n${SITE_URL}\nmade by @petrus_poke`;
+}
+
+async function shareToX() {
+  if (!currentNature) return;
+  const shareText = buildShareText(currentNature);
+  const intentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+  const originalLabel = els.btnShareX.textContent;
+  els.btnShareX.textContent = "準備中...";
+  els.btnShareX.disabled = true;
+
+  try {
+    const file = await generateResultImageFile();
+    // X(旧Twitter)アプリなど、画像共有に対応したアプリを共有シートから選べる環境向け
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], text: shareText });
+        els.btnShareX.textContent = originalLabel;
+        els.btnShareX.disabled = false;
+        return;
+      } catch (shareErr) {
+        if (shareErr && shareErr.name === "AbortError") {
+          els.btnShareX.textContent = originalLabel;
+          els.btnShareX.disabled = false;
+          return;
+        }
+        // 共有シートが使えない/失敗した場合はXの投稿画面(テキストのみ)にフォールバック
+      }
+    }
+  } catch (err) {
+    // 画像生成に失敗した場合もテキストのみのフォールバックへ
+  }
+
+  window.open(intentUrl, "_blank", "noopener");
+  els.btnShareX.textContent = originalLabel;
+  els.btnShareX.disabled = false;
+}
+
 els.btnStart.addEventListener("click", () => {
   showScreen(els.screenQuiz);
   renderQuestion();
@@ -328,3 +374,4 @@ els.btnStart.addEventListener("click", () => {
 els.btnBack.addEventListener("click", goBack);
 els.btnRetry.addEventListener("click", resetQuiz);
 els.btnSaveImage.addEventListener("click", saveResultImage);
+els.btnShareX.addEventListener("click", shareToX);
