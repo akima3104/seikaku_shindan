@@ -1,13 +1,13 @@
 /* ============================================================
    せいかく診断 - データ定義
-   5つのステータス(積極性/慎重さ/発想力/思いやり/俊敏さ)の
+   5つのステータス(積極性/忍耐力/発想力/思いやり/俊敏さ)の
    「一番伸びている値」と「一番低い値」の組み合わせから
    25種類のタイプを診断するロジック。
    ============================================================ */
 
 const TRAITS = {
   atk: { label: "積極性", short: "積極" },
-  def: { label: "慎重さ", short: "慎重" },
+  def: { label: "忍耐力", short: "忍耐" },
   spa: { label: "発想力", short: "発想" },
   spd: { label: "思いやり", short: "思いやり" },
   spe: { label: "俊敏さ", short: "俊敏" },
@@ -21,9 +21,9 @@ const QUESTIONS = [
   { trait: "atk", text: "人と競い合うことに、やりがいを感じる" },
   { trait: "atk", text: "グループの中では、自分から前に出て引っ張ることが多い" },
 
-  { trait: "def", text: "行動する前に、リスクをじっくり検討する" },
-  { trait: "def", text: "一度決めたルールや習慣は、きちんと守り続ける" },
-  { trait: "def", text: "変化の少ない、安定した環境を好む" },
+  { trait: "def", text: "困難なことでも、最後まで粘り強くやり遂げる" },
+  { trait: "def", text: "地道な作業やコツコツ続けることが苦にならない" },
+  { trait: "def", text: "すぐに結果が出なくても、辛抱強く続けられる" },
 
   { trait: "spa", text: "人とは違う、独自のアイデアを思いつくことが多い" },
   { trait: "spa", text: "常識にとらわれず、自由な発想で物事を考える" },
@@ -50,31 +50,31 @@ const LIKERT = [
 // key: "上がるステータス-下がるステータス"
 const NATURES = {
   "atk-atk": { name: "がんばりや", tagline: "地に足のついた努力家", desc: "どんな場面でも真正面から粘り強く取り組む、バランスの取れたタイプ。特別に尖った部分がない分、誰とでも自然体で付き合える。" },
-  "atk-def": { name: "さみしがり", tagline: "情熱的なリーダー", desc: "自分の意志を強く押し出し、周りを引っ張っていく力がある一方で、慎重な計画や地道な準備は後回しになりがち。" },
+  "atk-def": { name: "さみしがり", tagline: "情熱的なリーダー", desc: "自分の意志を強く押し出し、周りを引っ張っていく力がある一方で、コツコツと粘り強く続けることは後回しになりがち。" },
   "atk-spa": { name: "いじっぱり", tagline: "曲げない意志の人", desc: "一度決めたことは最後までやり抜く芯の強さを持つが、突飛な発想や柔軟な方向転換はやや苦手。" },
   "atk-spd": { name: "やんちゃ", tagline: "自由奔放なチャレンジャー", desc: "思い立ったら積極的に前へ進む行動力があるが、周囲への気配りは二の次になりやすい。" },
   "atk-spe": { name: "ゆうかん", tagline: "堂々たる挑戦者", desc: "物おじせず堂々と前に出る度胸の持ち主だが、スピード勝負や瞬発的な対応はあまり得意でない。" },
 
-  "def-atk": { name: "ずぶとい", tagline: "動じない盾", desc: "何が起きても動じない安定感が持ち味だが、自分の意見を強く主張するのは控えめ。" },
-  "def-def": { name: "すなお", tagline: "誠実な守り手", desc: "落ち着いて着実に物事を進める、素直で誠実なタイプ。目立たないが信頼を積み重ねていく。" },
-  "def-spa": { name: "わんぱく", tagline: "頼れるマイペース", desc: "安定志向で周囲を安心させる存在だが、奇抜な発想やひらめきはあまり得意でない。" },
-  "def-spd": { name: "のうてんき", tagline: "楽天的などっしり屋", desc: "何事にも動じずマイペースを貫くタイプだが、繊細な気配りやフォローはやや苦手。" },
-  "def-spe": { name: "のんき", tagline: "ゆったり安定タイプ", desc: "焦らずじっくり構えることができる反面、スピード感のある対応には欠ける。" },
+  "def-atk": { name: "ずぶとい", tagline: "動じない盾", desc: "何があっても粘り強く踏ん張れる忍耐力が持ち味だが、自分の意見を強く主張するのは控えめ。" },
+  "def-def": { name: "すなお", tagline: "誠実な守り手", desc: "コツコツと物事を積み重ねる、素直で忍耐強いタイプ。目立たないが信頼を積み重ねていく。" },
+  "def-spa": { name: "わんぱく", tagline: "頼れるマイペース", desc: "粘り強さで周囲を安心させる存在だが、奇抜な発想やひらめきはあまり得意でない。" },
+  "def-spd": { name: "のうてんき", tagline: "楽天的などっしり屋", desc: "何事にも動じず、粘り強くマイペースを貫くタイプだが、繊細な気配りやフォローはやや苦手。" },
+  "def-spe": { name: "のんき", tagline: "ゆったり忍耐タイプ", desc: "焦らず粘り強く構えることができる反面、スピード感のある対応には欠ける。" },
 
   "spa-atk": { name: "ひかえめ", tagline: "静かな発想家", desc: "独創的なアイデアを内に秘めているが、それを強く主張するのは苦手で、控えめに振る舞う。" },
-  "spa-def": { name: "おっとり", tagline: "自由な夢想家", desc: "ユニークな着想にあふれた発想力の持ち主だが、地道な計画性や慎重さはやや弱い。" },
+  "spa-def": { name: "おっとり", tagline: "自由な夢想家", desc: "ユニークな着想にあふれた発想力の持ち主だが、地道にコツコツ続ける粘り強さはやや弱い。" },
   "spa-spa": { name: "てれや", tagline: "気まぐれな創造者", desc: "発想力に富み、独自の世界観を持っているが、それをどう表現するかはその時の気分次第。" },
   "spa-spd": { name: "うっかりや", tagline: "無邪気なひらめき屋", desc: "斬新な発想を次々と生み出せるのが持ち味だが、周囲への配慮を忘れがち。" },
   "spa-spe": { name: "れいせい", tagline: "冷静な着想家", desc: "じっくりアイデアを練り上げるタイプで、勢い任せの行動には出にくい。" },
 
   "spd-atk": { name: "おだやか", tagline: "穏やかな聞き役", desc: "人の気持ちに寄り添うのが得意な、優しく穏やかな性格。ただし自己主張は控えめ。" },
-  "spd-def": { name: "おとなしい", tagline: "静かな思いやり屋", desc: "優しさと安定感を兼ね備えたタイプだが、大胆な発想や挑戦にはやや消極的。" },
+  "spd-def": { name: "おとなしい", tagline: "静かな思いやり屋", desc: "優しさと思いやりを兼ね備えたタイプだが、物事をコツコツ続ける粘り強さにはやや欠ける。" },
   "spd-spa": { name: "しんちょう", tagline: "気配り上手な慎重派", desc: "周囲への配慮が細やかで信頼されやすいが、突飛な発想を出すのはあまり得意でない。" },
   "spd-spd": { name: "きまぐれ", tagline: "つかみどころのない優しさ", desc: "思いやりのある性格だが、その時々の気分で振る舞いや表現の仕方が変わりやすい。" },
   "spd-spe": { name: "なまいき", tagline: "マイペースな共感者", desc: "人の気持ちをしっかり汲み取れるが、スピード感のある行動にはあまり向かない。" },
 
   "spe-atk": { name: "おくびょう", tagline: "慎重なスピード派", desc: "フットワークが軽く反応も早いが、自分の意見を強く主張するのは苦手。" },
-  "spe-def": { name: "せっかち", tagline: "せかせか行動派", desc: "素早く動くのが得意な反面、じっくり計画を練ることはあまり得意でない。" },
+  "spe-def": { name: "せっかち", tagline: "せかせか行動派", desc: "素早く動くのが得意な反面、コツコツ粘り強く続けることはあまり得意でない。" },
   "spe-spa": { name: "ようき", tagline: "明るい瞬発力タイプ", desc: "スピーディーに動くムードメーカーだが、独創的な発想を出すのはやや苦手。" },
   "spe-spd": { name: "むじゃき", tagline: "天真爛漫な行動派", desc: "素早く無邪気に動く行動力があるが、周囲への配慮は後回しになりがち。" },
   "spe-spe": { name: "まじめ", tagline: "実直な行動派", desc: "何事にもすぐ着手できる、まっすぐで誠実なタイプ。特別な弱点が目立たないバランス型。" },
@@ -96,6 +96,7 @@ const els = {
   btnBack: document.getElementById("btn-back"),
   btnRetry: document.getElementById("btn-retry"),
   btnCopy: document.getElementById("btn-copy"),
+  btnShareX: document.getElementById("btn-share-x"),
   progressFill: document.getElementById("progress-fill"),
   progressLabel: document.getElementById("progress-label"),
   traitTag: document.getElementById("quiz-trait-tag"),
@@ -229,23 +230,29 @@ function renderResult(nature, avgs, upKey, downKey) {
 
   const style = document.createElement("style");
   style.textContent = `
-    .pentagon-outline{ fill:none; stroke:#333748; stroke-width:1.2; }
-    .pentagon-fill{ fill:#e3b23c33; stroke:#e3b23c; stroke-width:2; transition: all .6s ease; }
-    .pentagon-label{ font-family:"JetBrains Mono",monospace; font-size:10px; fill:#9298ab; }
+    .pentagon-outline{ fill:none; stroke:#efe4e8; stroke-width:1.5; }
+    .pentagon-fill{ fill:#ff6f9122; stroke:#ff6f91; stroke-width:2.5; transition: all .6s ease; }
+    .pentagon-label{ font-family:"M PLUS Rounded 1c",sans-serif; font-weight:700; font-size:11px; fill:#8c8797; }
   `;
   els.resultPentagon.appendChild(style);
 
   els.resultStats.innerHTML = TRAIT_ORDER.map((key) => {
     const val = avgs[key];
-    const pct = ((val - 1) / 4) * 100;
+    const filledCount = Math.max(1, Math.min(5, Math.round(val)));
     const cls = key === upKey && upKey !== downKey ? "is-up" : key === downKey && upKey !== downKey ? "is-down" : "";
+    const segments = Array.from({ length: 5 }, (_, i) =>
+      `<span class="segment ${i < filledCount ? `filled ${cls}` : ""}"></span>`
+    ).join("");
     return `
       <div class="stat-row">
         <span class="stat-label">${TRAITS[key].label}</span>
-        <span class="stat-track"><span class="stat-fill ${cls}" style="width:${pct.toFixed(0)}%"></span></span>
+        <span class="stat-segments">${segments}</span>
         <span class="stat-value">${val.toFixed(1)}</span>
       </div>`;
   }).join("");
+
+  const shareText = `【せいかく診断】私のタイプは「${nature.name}」でした!\n${nature.tagline}\n#せいかく診断`;
+  els.btnShareX.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
 
   showScreen(els.screenResult);
 }
