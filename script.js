@@ -6,11 +6,11 @@
    ============================================================ */
 
 const TRAITS = {
-  atk: { label: "積極性", short: "積極" },
-  def: { label: "忍耐力", short: "忍耐" },
-  spa: { label: "発想力", short: "発想" },
-  spd: { label: "思いやり", short: "思いやり" },
-  spe: { label: "俊敏さ", short: "俊敏" },
+  atk: { label: "積極性(A)", short: "積極(A)" },
+  def: { label: "忍耐力(B)", short: "忍耐(B)" },
+  spa: { label: "発想力(C)", short: "発想(C)" },
+  spd: { label: "思いやり(D)", short: "思いやり(D)" },
+  spe: { label: "俊敏さ(S)", short: "俊敏(S)" },
 };
 
 // レーダーチャートに描く順番(五角形の頂点、上から時計回り)
