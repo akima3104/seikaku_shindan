@@ -251,7 +251,7 @@ function renderResult(nature, avgs, upKey, downKey) {
       </div>`;
   }).join("");
 
-  const shareText = `【せいかく診断】私のタイプは「${nature.name}」でした!\n${nature.tagline}\n#せいかく診断`;
+  const shareText = `【せいかく診断】私のタイプは「${nature.name}」でした!\n${nature.tagline}\n#せいかく診断\nmade by @petrus_poke`;
   els.btnShareX.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
 
   showScreen(els.screenResult);
@@ -264,21 +264,53 @@ function resetQuiz() {
   showScreen(els.screenQuiz);
 }
 
+function canvasToBlob(canvas) {
+  return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+}
+
 async function saveResultImage() {
   const target = document.getElementById("result-card");
   const originalLabel = els.btnSaveImage.textContent;
   els.btnSaveImage.textContent = "画像を作成中...";
   els.btnSaveImage.disabled = true;
+
   try {
     const canvas = await html2canvas(target, {
       backgroundColor: "#fffaf5",
       scale: 2,
       useCORS: true,
     });
+    const fileName = `せいかく診断_${els.resultName.textContent}.png`;
+    const blob = await canvasToBlob(canvas);
+    const file = new File([blob], fileName, { type: "image/png" });
+
+    // iOSなど対応環境では共有シートを開き、「イメージを保存」で写真アプリに保存できるようにする
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: "せいかく診断",
+          text: `私のタイプは「${els.resultName.textContent}」でした`,
+        });
+        els.btnSaveImage.textContent = originalLabel;
+        els.btnSaveImage.disabled = false;
+        return;
+      } catch (shareErr) {
+        // 共有シートをキャンセルした場合はダウンロードにフォールバックしない
+        if (shareErr && shareErr.name === "AbortError") {
+          els.btnSaveImage.textContent = originalLabel;
+          els.btnSaveImage.disabled = false;
+          return;
+        }
+        // それ以外のエラーはダウンロード方式にフォールバック
+      }
+    }
+
     const link = document.createElement("a");
-    link.download = `せいかく診断_${els.resultName.textContent}.png`;
-    link.href = canvas.toDataURL("image/png");
+    link.download = fileName;
+    link.href = URL.createObjectURL(blob);
     link.click();
+    URL.revokeObjectURL(link.href);
   } catch (err) {
     els.btnSaveImage.textContent = "保存に失敗しました";
     setTimeout(() => (els.btnSaveImage.textContent = originalLabel), 1800);
