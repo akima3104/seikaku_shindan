@@ -1,18 +1,16 @@
 :root{
-  --bg: #14161d;
-  --bg-soft: #1b1e28;
-  --card: #21242f;
-  --line: #333748;
-  --text: #f3efe4;
-  --text-muted: #9298ab;
-  --gold: #e3b23c;
-  --gold-soft: #e3b23c33;
-  --teal: #49d3c4;
-  --teal-soft: #49d3c433;
-  --danger-low: #6b7180;
-  --radius: 18px;
-  --serif: "Shippori Mincho", serif;
-  --sans: "Zen Kaku Gothic New", sans-serif;
+  --bg: #fffaf5;
+  --card: #ffffff;
+  --line: #efe4e8;
+  --text: #33313f;
+  --text-muted: #8c8797;
+  --pink: #ff6f91;
+  --pink-soft: #ff6f9122;
+  --mint: #17c3b2;
+  --mint-soft: #17c3b222;
+  --low: #d8d3e0;
+  --radius: 22px;
+  --rounded: "M PLUS Rounded 1c", sans-serif;
   --mono: "JetBrains Mono", monospace;
 }
 
@@ -21,9 +19,12 @@
 html,body{
   margin:0;
   padding:0;
-  background: radial-gradient(circle at 15% 0%, #1c202c 0%, var(--bg) 55%);
+  background:
+    radial-gradient(circle at 8% -6%, #ffe1ea 0%, transparent 42%),
+    radial-gradient(circle at 96% 6%, #d7f7f0 0%, transparent 40%),
+    var(--bg);
   color: var(--text);
-  font-family: var(--sans);
+  font-family: var(--rounded);
   min-height:100vh;
   -webkit-font-smoothing: antialiased;
 }
@@ -47,31 +48,32 @@ html,body{
 .eyebrow{
   font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: .18em;
-  color: var(--teal);
+  letter-spacing: .16em;
+  color: var(--mint);
   margin: 0 0 14px;
   text-transform: uppercase;
+  font-weight: 700;
 }
 
 /* ---------- Intro ---------- */
 .intro{ text-align:center; }
 
 .intro-title{
-  font-family: var(--serif);
+  font-family: var(--rounded);
   font-weight: 800;
   font-size: clamp(48px, 12vw, 76px);
   line-height: 1;
   margin: 0 0 20px;
   color: var(--text);
-  letter-spacing: .02em;
+  letter-spacing: .01em;
 }
 .intro-title-sub{
   display:block;
-  font-size: .38em;
-  font-weight: 500;
-  color: var(--gold);
+  font-size: .36em;
+  font-weight: 700;
+  color: var(--pink);
   letter-spacing: .5em;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .intro-lede{
@@ -80,17 +82,18 @@ html,body{
   line-height: 1.9;
   max-width: 420px;
   margin: 0 auto 36px;
+  font-weight: 500;
 }
 
 .intro-pentagon{ width: 200px; margin: 0 auto 36px; }
 .intro-pentagon svg{ width:100%; height:auto; overflow: visible; }
 .intro-pentagon-outline{
-  fill:none; stroke: var(--line); stroke-width:1.5;
+  fill:none; stroke: var(--line); stroke-width:2;
 }
 .intro-pentagon-fill{
-  fill: var(--gold-soft);
-  stroke: var(--gold);
-  stroke-width: 1.5;
+  fill: var(--pink-soft);
+  stroke: var(--pink);
+  stroke-width: 2;
   animation: pulse-fill 3.2s ease-in-out infinite;
   transform-origin: 120px 120px;
 }
@@ -108,7 +111,7 @@ html,body{
 
 /* ---------- Buttons ---------- */
 .btn{
-  font-family: var(--sans);
+  font-family: var(--rounded);
   font-weight: 700;
   font-size: 15px;
   border-radius: 999px;
@@ -117,11 +120,11 @@ html,body{
   cursor: pointer;
   transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
 }
-.btn:focus-visible{ outline: 2px solid var(--teal); outline-offset: 3px; }
+.btn:focus-visible{ outline: 2px solid var(--mint); outline-offset: 3px; }
 .btn--primary{
-  background: var(--gold);
-  color: #201703;
-  box-shadow: 0 10px 26px -8px var(--gold-soft);
+  background: linear-gradient(135deg, var(--pink), #ff8fa8);
+  color: #fff;
+  box-shadow: 0 12px 26px -10px var(--pink-soft);
 }
 .btn--primary:hover{ transform: translateY(-2px); }
 .btn--ghost{
@@ -136,10 +139,11 @@ html,body{
 /* ---------- Quiz ---------- */
 .quiz-progress{ display:flex; align-items:center; gap:14px; margin-bottom: 34px; }
 .quiz-progress-track{
-  flex:1; height:4px; background: var(--line); border-radius: 4px; overflow:hidden;
+  flex:1; height:8px; background: var(--line); border-radius: 8px; overflow:hidden;
 }
 .quiz-progress-fill{
-  height:100%; width:0%; background: linear-gradient(90deg, var(--teal), var(--gold));
+  height:100%; width:0%; background: linear-gradient(90deg, var(--mint), var(--pink));
+  border-radius: 8px;
   transition: width .35s ease;
 }
 .quiz-progress-label{
@@ -150,14 +154,15 @@ html,body{
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: .14em;
-  color: var(--teal);
+  color: var(--mint);
   text-transform: uppercase;
   margin: 0 0 10px;
+  font-weight: 700;
 }
 
 .quiz-question{
-  font-family: var(--serif);
-  font-size: clamp(22px, 5vw, 30px);
+  font-family: var(--rounded);
+  font-size: clamp(21px, 5vw, 28px);
   line-height: 1.55;
   margin: 0 0 32px;
   font-weight: 700;
@@ -167,36 +172,45 @@ html,body{
 .quiz-option{
   display:flex; align-items:center; gap:14px;
   background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  border: 2px solid var(--line);
+  border-radius: 16px;
   padding: 14px 18px;
   text-align:left;
   cursor:pointer;
   color: var(--text);
-  font-family: var(--sans);
+  font-family: var(--rounded);
+  font-weight: 500;
   font-size: 14.5px;
-  transition: border-color .15s ease, background .15s ease, transform .1s ease;
+  box-shadow: 0 6px 16px -12px rgba(51,49,63,.25);
+  transition: border-color .15s ease, transform .1s ease, box-shadow .15s ease;
 }
-.quiz-option:hover{ border-color: var(--gold); transform: translateX(2px); }
-.quiz-option:focus-visible{ outline: 2px solid var(--teal); outline-offset: 2px; }
+.quiz-option:hover{ border-color: var(--pink); transform: translateX(2px); box-shadow: 0 8px 20px -12px var(--pink-soft); }
+.quiz-option:focus-visible{ outline: 2px solid var(--mint); outline-offset: 2px; }
 .quiz-option-num{
   font-family: var(--mono);
+  font-weight: 700;
   font-size: 12px;
-  color: var(--text-muted);
-  width: 18px;
+  color: #fff;
+  background: var(--mint);
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink: 0;
 }
 
 /* ---------- Result ---------- */
 .result-name{
-  font-family: var(--serif);
+  font-family: var(--rounded);
+  font-weight: 800;
   font-size: clamp(38px, 9vw, 56px);
   margin: 0 0 8px;
-  color: var(--gold);
+  color: var(--pink);
 }
 .result-tagline{
   color: var(--text-muted);
   font-size: 15px;
   margin: 0 0 32px;
+  font-weight: 600;
 }
 
 .result-body{
@@ -205,6 +219,11 @@ html,body{
   align-items:center;
   flex-wrap: wrap;
   margin-bottom: 30px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 26px;
+  box-shadow: 0 16px 40px -24px rgba(51,49,63,.3);
 }
 .result-pentagon{ width: 220px; flex-shrink:0; }
 .result-pentagon svg{ width:100%; height:auto; overflow:visible; }
@@ -215,26 +234,41 @@ html,body{
   line-height: 1.9;
   color: var(--text);
   margin: 0 0 22px;
+  font-weight: 500;
 }
 
 .result-stats{ display:flex; flex-direction:column; gap: 10px; }
 .stat-row{ display:flex; align-items:center; gap: 10px; }
 .stat-label{
   width: 84px; flex-shrink:0;
-  font-size: 12.5px; color: var(--text-muted); font-family: var(--mono);
+  font-size: 12.5px; color: var(--text-muted); font-family: var(--mono); font-weight:600;
 }
-.stat-track{
-  flex:1; height:6px; background: var(--line); border-radius: 6px; overflow:hidden;
+.stat-segments{ display:flex; gap: 5px; }
+.segment{
+  width: 18px; height: 10px;
+  border-radius: 4px;
+  background: var(--low);
+  transition: background .25s ease;
 }
-.stat-fill{ height:100%; border-radius:6px; background: var(--teal); }
-.stat-fill.is-up{ background: var(--gold); }
-.stat-fill.is-down{ background: var(--danger-low); }
+.segment.filled{ background: var(--mint); }
+.segment.filled.is-up{ background: var(--pink); }
+.segment.filled.is-down{ background: var(--low); }
 .stat-value{ width: 30px; text-align:right; font-family: var(--mono); font-size:12px; color: var(--text-muted); }
 
+.btn--x{
+  display:inline-flex; align-items:center; justify-content:center;
+  background: #14151a;
+  color: #fff;
+  border: none;
+  text-decoration:none;
+  padding: 14px 28px;
+}
+.btn--x:hover{ transform: translateY(-2px); opacity: .9; }
+
 .result-actions{ display:flex; gap:14px; flex-wrap:wrap; align-items:center; margin-bottom: 18px; }
-.result-note{ font-size: 11.5px; color: var(--text-muted); line-height:1.7; opacity:.75; }
+.result-note{ font-size: 11.5px; color: var(--text-muted); line-height:1.7; opacity:.85; }
 
 @media (max-width: 480px){
-  .result-body{ flex-direction: column; }
+  .result-body{ flex-direction: column; padding: 20px; }
   .result-pentagon{ width: 180px; margin: 0 auto; }
 }
